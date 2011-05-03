@@ -45,47 +45,20 @@ class Background(Layer):
     def __init__(self):
         super(Background, self).__init__()
         twittie = random.choice(twitties)
-        text = twittie.text
+        self.display_twittie(twittie.text, twittie.user.screen_name)
 
-        texts = wrap(text, 28).split('\n')
-
-        self.labels = []
-
-        for text in texts:
-            label = Label(text,
-                font_name="Operating instructions",
-                font_size=40,
-                anchor_x='center', anchor_y='center',
-                color=(255, 255, 255, 200)
-            )
-            self.add(label)
-            self.labels.append(label)
-
-        for indice, label in enumerate(self.labels):
-            label.position = -100, 500 - (100 * indice)
-            label.do(MoveTo((400, 500 - (100 * indice)), duration=2))
-
-        self.name_label = Label('by @' +twittie.user.screen_name,
-            font_name="Operating instructions",
-            font_size=20,
-            anchor_x='center', anchor_y='center',
-            color=(255, 255, 255, 200)
-        )
-        self.name_label.position = 150, 50
-        self.add(self.name_label)
-
-
-    def on_key_press (self, key, modifiers):
+    def on_key_press(self, key, modifiers):
         twittie = random.choice(twitties)
-        text = twittie.text
-
-        texts = wrap(text, 28).split('\n')
-
-        self.remove(self.name_label)
 
         for label in self.labels:
             self.remove(label)
 
+        self.remove(self.name_label)
+        self.display_twittie(twittie.text, twittie.user.screen_name)
+
+    def display_twittie(self, message, user):
+        texts = wrap(message, 28).split('\n')
+
         self.labels = []
 
         for text in texts:
@@ -102,7 +75,7 @@ class Background(Layer):
             label.position = -100, 500 - (100 * indice)
             label.do(MoveTo((400, 500 - (100 * indice)), duration=2))
 
-        self.name_label = Label('by @' +twittie.user.screen_name,
+        self.name_label = Label('by @' + user,
             font_name="Operating instructions",
             font_size=20,
             anchor_x='center', anchor_y='center',
